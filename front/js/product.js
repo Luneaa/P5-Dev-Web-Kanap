@@ -67,15 +67,15 @@ fetch("http://localhost:3000/api/products/" + id)
         const quantity = parseInt(document.getElementById("quantity").value);
 
         if (color == ""){
-            alert("SAISIS LA PUTAI DE COULEUR");
+            alert("Veulliez saisir une couleur");
             return;
         }
         if (quantity <= 0){
-            alert("OU TU T\'ES CRU TU PENSE POUVOIR NOUS VENDRE NOS CANAPÉ");
+            alert("Veulliez saisir une quantité superieure à zero");
             return;
         }
         if (quantity > 100){
-            alert("FAUT PAS ABUSER TU N\' PAS U SI GRAND SALON");
+            alert("Veuillez ne pas ajouter plus de 100 articles à la fois");
             return;
         }
 
