@@ -1,4 +1,4 @@
-// Creation d'un nouvel element HTML kanap
+// Creates a new kanap element as a HTML node
 function createKanap(kanapItem) {
     const newElement = document.createElement("a");
     newElement.setAttribute("href", "./product.html?id=" + kanapItem._id);
@@ -13,7 +13,7 @@ function createKanap(kanapItem) {
     newP.classList.add("productDescription");
     newP.innerHTML = kanapItem.description;
 
-    // Mise en arborescence
+    // Insertions of all elements
     newArticle.appendChild(newImg);
     newArticle.appendChild(newTitle);
     newArticle.appendChild(newP);
@@ -22,6 +22,7 @@ function createKanap(kanapItem) {
     return newElement;
 }
 
+// Fetches all the kanap infos
 fetch(" http://localhost:3000/api/products/")
     .then(function (result) {
         if (result.ok) {
@@ -36,5 +37,6 @@ fetch(" http://localhost:3000/api/products/")
         }
     })
     .catch(function (error) {
-        // Une erreur est survenue
+        // An error happenned
+        alert("Une erreur inattendue s'est produite, veuillez vous rapprocher de l'administrateur du site");
     });

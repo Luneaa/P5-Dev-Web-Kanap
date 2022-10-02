@@ -1,3 +1,4 @@
+// Creates and adds kanap information for a given kanap
 function createKanapDetail(kanapItem){
     const itemImages = document.getElementsByClassName("item__img");
     if (itemImages.length > 0){
@@ -23,13 +24,11 @@ function createKanapDetail(kanapItem){
         optionColor.setAttribute("value", color);
         optionColor.innerHTML = color;
         colors.appendChild(optionColor);
-
     }
-
 }
 
+// Get kanap id from current URL
 const url = new URL(window.location.href);
-
 const searchParams = new URLSearchParams(url.search);
 
 let id = "";
@@ -38,6 +37,7 @@ if(searchParams.has("id")) {
     id = searchParams.get("id");
 }
 
+// Fetches the kanap information from the API with the id
 fetch("http://localhost:3000/api/products/" + id)
     .then(function (result) {
         if (result.ok) {
@@ -49,10 +49,11 @@ fetch("http://localhost:3000/api/products/" + id)
 
     })
     .catch(function (error) {
-        // Une erreur est survenue
+        // An error happenned
+        alert("Une erreur inattendue s'est produite, veuillez vous rapprocher de l'administrateur du site");
     });
 
-
+    // Add the "add to cart" event
     const button = document.getElementById("addToCart");
     button.addEventListener('click', function(event){
         let shoppingCart = localStorage.getItem('shoppingCart');
@@ -62,10 +63,11 @@ fetch("http://localhost:3000/api/products/" + id)
         else{
             shoppingCart = JSON.parse(shoppingCart);
         }
-        const title = document.getElementById("title").innerHTML;
+
         const color = document.getElementById("colors").value;
         const quantity = parseInt(document.getElementById("quantity").value);
 
+        // Error managment
         if (color == ""){
             alert("Veulliez saisir une couleur");
             return;
@@ -81,18 +83,28 @@ fetch("http://localhost:3000/api/products/" + id)
 
         let kanapFound = false;
         for (let kanap of shoppingCart){
-            if (kanap.title == title && kanap.color == color){
+            // Check if kanap is already in the shopping cart
+            if (kanap.id == id && kanap.color == color){
+
+                if(quantity + kanap.quantity > 100){
+                    alert("Veuillez ne pas plus de 100 fois le meme article");
+                    return;
+                }
+
                 kanap.quantity += quantity;
                 kanapFound = true;
                 break;
             }
         }
+        // If the kanap was not found in the shopping cart we add it
         if (!kanapFound){
             shoppingCart.push({
-                title : title, 
+                id : id, 
                 color : color, 
                 quantity : quantity
             });
         }
+
+        // Save changes to local storage
         localStorage.setItem("shoppingCart", JSON.stringify(shoppingCart));
     });
